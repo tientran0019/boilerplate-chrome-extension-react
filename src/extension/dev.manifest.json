@@ -1,0 +1,43 @@
+{
+	"name": "Chrome Extension with React & Webpack dev",
+	"version": "0.0.1",
+	"description": "This extension",
+	"homepage_url": "http://example.com",
+	"options_page": "options.html",
+	"background": {
+		"page": "background.html"
+	},
+	"default_locale": "en",
+	"browser_action": {
+		"default_title": "React Chrome Extension Example dev",
+		"default_popup": "popup.html",
+		"default_icon": "icons/icon-48.png",
+		"persistent": true
+	},
+	"chrome_url_overrides": {
+		"newtab": "newtab.html"
+	},
+	"icons": {
+		"16": "icons/icon-16.png",
+		"19": "icons/icon-19.png",
+		"48": "icons/icon-48.png",
+		"128": "icons/icon-128.png"
+	},
+	"permissions": ["contextMenus", "tabs", "storage"],
+	"content_scripts": [
+		{
+			"matches": ["http://*/*", "https://*/*", "<all_urls>"],
+			"js": ["contentScript.bundle.js", "inject.bundle.js"],
+			"css": ["content.styles.css"]
+		}
+	],
+	"web_accessible_resources": [
+		"content.styles.css",
+		"icons/icon-128.png",
+		"icons/icon-48.png",
+		"icons/icon-19.png",
+		"icons/icon-16.png"
+	],
+	"manifest_version": 2,
+	"content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"
+}
