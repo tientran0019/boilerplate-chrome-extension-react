@@ -1,7 +1,7 @@
 {
-	"name": "Chrome Extension with React & Webpack prod",
+	"name": "__MSG_appName__",
 	"version": "0.0.1",
-	"description": "This extension",
+	"description": "__MSG_appDesc__",
 	"homepage_url": "http://example.com",
 	"options_page": "options.html",
 	"background": {
@@ -9,7 +9,6 @@
 	},
 	"default_locale": "en",
 	"browser_action": {
-		"default_title": "React Chrome Extension Example prod",
 		"default_popup": "popup.html",
 		"default_icon": "icons/icon-48.png",
 		"persistent": true
@@ -27,7 +26,7 @@
 	"content_scripts": [
 		{
 			"matches": ["http://*/*", "https://*/*", "<all_urls>"],
-			"js": ["contentScript.bundle.js", "inject.bundle.js"],
+			"js": ["content-script.bundle.js", "inject.bundle.js"],
 			"css": ["content.styles.css"]
 		}
 	],
