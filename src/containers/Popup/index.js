@@ -13,8 +13,6 @@ import Greetings from 'src/components/Greetings';
 
 import './index.css';
 
-console.log('process.env.DEVELOPER', process.env.DEVELOPER);
-
 const Popup = (props) => {
 	// const { } = props;
 

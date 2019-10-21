@@ -26,12 +26,12 @@
 	"content_scripts": [
 		{
 			"matches": ["http://*/*", "https://*/*", "<all_urls>"],
-			"js": ["content-script.bundle.js", "inject.bundle.js"],
-			"css": ["content.styles.css"]
+			"js": ["js/content-script.bundle.js", "js/inject.bundle.js"],
+			"css": ["styles/content.styles.css"]
 		}
 	],
 	"web_accessible_resources": [
-		"content.styles.css",
+		"styles/content.styles.css",
 		"icons/icon-128.png",
 		"icons/icon-48.png",
 		"icons/icon-19.png",
