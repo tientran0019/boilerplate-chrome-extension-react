@@ -11,13 +11,13 @@ import React from 'react';
 
 import Greetings from 'src/components/Greetings';
 
-import './index.css';
+import classes from './index.scss';
 
 const Popup = (props) => {
 	// const { } = props;
 
 	return (
-		<div>
+		<div className={classes.wrapper}>
 			<h1>This is the Popup Window</h1>
 			<div
 				style={{

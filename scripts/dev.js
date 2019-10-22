@@ -2,6 +2,8 @@
 /* eslint-disable import/no-extraneous-dependencies */
 require('dotenv').config();
 
+const ExtensionReloader = require('webpack-extension-reloader');
+
 const WebpackDevServer = require('webpack-dev-server');
 const path = require('path');
 const webpack = require('webpack');
@@ -24,7 +26,7 @@ for (const entryName in config.entry) {
 	}
 }
 
-config.plugins = [new webpack.HotModuleReplacementPlugin()].concat(
+config.plugins = [new webpack.HotModuleReplacementPlugin(), new ExtensionReloader()].concat(
 	config.plugins || [],
 );
 

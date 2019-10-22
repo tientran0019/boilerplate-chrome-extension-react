@@ -14,7 +14,7 @@ const Inject = (props) => {
 
 	return (
 		<div className="name">
-			<img src={chrome.extension.getURL('icons/icon-16.png')} alt="icon" />
+			<img src={chrome.extension.getURL('icons/icon-48.png')} alt="icon" />
 		</div>
 	);
 };

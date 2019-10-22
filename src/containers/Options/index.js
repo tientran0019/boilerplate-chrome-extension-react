@@ -9,13 +9,13 @@
 import React from 'react';
 // import PropTypes from 'prop-types';
 
-import './index.css';
+import classes from './index.scss';
 
 const Options = (props) => {
 	// const { } = props;
 
 	return (
-		<div className="OptionsContainer">Options Page</div>
+		<div className={classes.optionsContainer}>Options Page</div>
 	);
 };
 

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './index.css';
+import classes from './index.scss';
 
 class Newtab extends Component {
 	state = {
@@ -11,7 +11,7 @@ class Newtab extends Component {
 		const { reactVersion, webpackVersion } = this.state;
 
 		return (
-			<div className="NewtabContainer">
+			<div className={classes.newtabContainer}>
 				<p>This is the new tab page.</p>
 				<p>
 					It uses{' '}

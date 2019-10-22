@@ -1,6 +1,6 @@
 {
 	"name": "__MSG_appName__",
-	"version": "0.0.1",
+	"version": "2.0.1",
 	"description": "__MSG_appDesc__",
 	"homepage_url": "http://example.com",
 	"options_page": "options.html",
@@ -13,29 +13,33 @@
 		"default_icon": "icons/icon-48.png",
 		"persistent": true
 	},
-	"chrome_url_overrides": {
-		"newtab": "newtab.html"
-	},
 	"icons": {
 		"16": "icons/icon-16.png",
 		"19": "icons/icon-19.png",
+		"32": "icons/icon-32.png",
 		"48": "icons/icon-48.png",
 		"128": "icons/icon-128.png"
 	},
-	"permissions": ["contextMenus", "tabs", "storage"],
+	"permissions": [
+        "activeTab",
+        "tabs",
+        "declarativeContent",
+        "storage",
+        "contextMenus"
+	],
+	"chrome_url_overrides": {
+		"newtab": "newtab.html"
+	},
 	"content_scripts": [
 		{
 			"matches": ["http://*/*", "https://*/*", "<all_urls>"],
-			"js": ["js/content-script.bundle.js", "js/inject.bundle.js"],
+			"js": ["js/content-script.bundle.js"],
 			"css": ["styles/content.styles.css"]
 		}
 	],
 	"web_accessible_resources": [
 		"styles/content.styles.css",
-		"icons/icon-128.png",
-		"icons/icon-48.png",
-		"icons/icon-19.png",
-		"icons/icon-16.png"
+		"icons/icon-48.png"
 	],
 	"manifest_version": 2,
 	"content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"

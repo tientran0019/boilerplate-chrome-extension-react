@@ -5,6 +5,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const WriteFilePlugin = require('write-file-webpack-plugin');
 const Dotenv = require('dotenv-webpack');
+const autoprefixer = require('autoprefixer');
 
 const { env } = process;
 
@@ -32,7 +33,6 @@ const options = {
 		newtab: path.join(__dirname, 'src', 'extension', 'newtab', 'index.js'),
 		options: path.join(__dirname, 'src', 'extension', 'options', 'index.js'),
 		popup: path.join(__dirname, 'src', 'extension', 'popup', 'index.js'),
-		inject: path.join(__dirname, 'src', 'extension', 'inject', 'index.js'),
 		background: path.join(__dirname, 'src', 'extension', 'background', 'index.js'),
 		'content-script': path.join(__dirname, 'src', 'extension', 'content', 'index.js'),
 	},
@@ -47,8 +47,73 @@ const options = {
 		rules: [
 			{
 				test: /\.css$/,
-				loader: 'style-loader!css-loader',
+				use: [
+					'style-loader',
+					{
+						loader: 'css-loader',
+						options: {
+							modules: process.env.NODE_ENV === 'production' ? true : {
+								mode: 'local',
+								localIdentName: '[folder]__[local]__[hash:base64:5]',
+								context: path.resolve(__dirname, 'src'),
+							},
+							sourceMap: process.env.NODE_ENV !== 'production',
+						},
+					},
+					{
+						loader: 'postcss-loader',
+						options: {
+							plugins: () => [autoprefixer],
+						},
+					},
+				],
 				exclude: /node_modules/,
+			},
+			{
+				test: /\.css$/,
+				use: [
+					'style-loader',
+					'css-loader',
+				],
+				include: /node_modules/,
+			},
+			{
+				test: /\.(scss|sass)$/,
+				use: [
+					{
+						loader: 'style-loader',
+					},
+					{
+						loader: 'css-loader',
+						options: {
+							modules: process.env.NODE_ENV === 'production' ? true : {
+								mode: 'local',
+								localIdentName: '[folder]__[local]__[hash:base64:5]',
+								context: path.resolve(__dirname, 'src'),
+							},
+							sourceMap: process.env.NODE_ENV !== 'production',
+						},
+					},
+					{
+						loader: 'postcss-loader',
+						options: {
+							plugins: () => [autoprefixer],
+						},
+					},
+					{
+						loader: 'sass-loader',
+					},
+				],
+				exclude: /node_modules/,
+			},
+			{
+				test: /\.(scss|sass)$/,
+				use: [
+					'style-loader',
+					'css-loader',
+					'sass-loader',
+				],
+				include: /node_modules/,
 			},
 			{
 				test: new RegExp('.(' + fileExtensions.join('|') + ')$'),
@@ -142,11 +207,6 @@ const options = {
 			template: path.join(__dirname, 'src', 'extension', 'popup', 'index.html'),
 			filename: '../popup.html',
 			chunks: ['popup'],
-		}),
-		new HtmlWebpackPlugin({
-			template: path.join(__dirname, 'src', 'extension', 'inject', 'index.html'),
-			filename: '../inject.html',
-			chunks: ['inject'],
 		}),
 		new HtmlWebpackPlugin({
 			template: path.join(__dirname, 'src', 'extension', 'background', 'index.html'),
