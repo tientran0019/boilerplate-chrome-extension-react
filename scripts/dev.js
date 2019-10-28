@@ -26,6 +26,8 @@ for (const entryName in config.entry) {
 	}
 }
 
+config.devtool = 'eval-source-map';
+
 config.plugins = [new webpack.HotModuleReplacementPlugin(), new ExtensionReloader()].concat(
 	config.plugins || [],
 );
