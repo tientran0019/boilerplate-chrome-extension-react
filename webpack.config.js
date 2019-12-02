@@ -30,8 +30,8 @@ const fileExtensions = [
 const options = {
 	mode: process.env.NODE_ENV || 'development',
 	entry: {
-		newtab: path.join(__dirname, 'src', 'extension', 'newtab', 'index.js'),
-		options: path.join(__dirname, 'src', 'extension', 'options', 'index.js'),
+		newtab: path.join(__dirname, 'src', 'extension', 'overrides', 'newtab', 'index.js'),
+		options: path.join(__dirname, 'src', 'extension', 'pages', 'options', 'index.js'),
 		popup: path.join(__dirname, 'src', 'extension', 'popup', 'index.js'),
 		background: path.join(__dirname, 'src', 'extension', 'background', 'index.js'),
 		'content-script': path.join(__dirname, 'src', 'extension', 'content', 'index.js'),
@@ -194,12 +194,12 @@ const options = {
 			},
 		),
 		new HtmlWebpackPlugin({
-			template: path.join(__dirname, 'src', 'extension', 'newtab', 'index.html'),
+			template: path.join(__dirname, 'src', 'extension', 'overrides', 'newtab', 'index.html'),
 			filename: '../newtab.html',
 			chunks: ['newtab'],
 		}),
 		new HtmlWebpackPlugin({
-			template: path.join(__dirname, 'src', 'extension', 'options', 'index.html'),
+			template: path.join(__dirname, 'src', 'extension', 'pages', 'options', 'index.html'),
 			filename: '../options.html',
 			chunks: ['options'],
 		}),

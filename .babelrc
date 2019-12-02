@@ -4,6 +4,7 @@
 	],
 	"plugins": [
 		"react-hot-loader/babel",
+		"@babel/plugin-proposal-optional-chaining",
 		["@babel/plugin-proposal-decorators", { "legacy": true }],
         [
             "module-resolver",
