@@ -1,11 +1,14 @@
+/* eslint-disable prefer-object-spread */
 const webpack = require('webpack');
 const path = require('path');
+const concat = require('lodash/concat');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const WriteFilePlugin = require('write-file-webpack-plugin');
 const Dotenv = require('dotenv-webpack');
 const autoprefixer = require('autoprefixer');
+const glob = require('glob');
 
 const { env } = process;
 
@@ -27,15 +30,51 @@ const fileExtensions = [
 	'woff2',
 ];
 
+const overrides = glob.sync(path.join(__dirname, 'src/extension/overrides/**/index.js')).reduce((acc, p) => {
+	const name = p.replace('/index.js', '').split('/');
+	acc[name[name.length - 1]] = p;
+	return acc;
+}, {});
+
+const pages = glob.sync(path.join(__dirname, 'src/extension/pages/**/index.js')).reduce((acc, p) => {
+	const name = p.replace('/index.js', '').split('/');
+	acc[name[name.length - 1]] = p;
+	return acc;
+}, {});
+
+const entry = Object.assign({
+	popup: path.join(__dirname, 'src', 'extension', 'popup', 'index.js'),
+	background: path.join(__dirname, 'src', 'extension', 'background', 'index.js'),
+	'content-script': path.join(__dirname, 'src', 'extension', 'content', 'index.js'),
+}, overrides, pages);
+
+const overridesHtml = glob.sync(path.join(__dirname, 'src/extension/overrides/**/index.html')).reduce((acc, p) => {
+	const name = p.replace('/index.html', '').split('/');
+
+	acc.push(new HtmlWebpackPlugin({
+		template: p,
+		filename: '../' + name[name.length - 1] + '.html',
+		chunks: [name[name.length - 1]],
+	}));
+
+	return acc;
+}, []);
+
+const pagesHtml = glob.sync(path.join(__dirname, 'src/extension/pages/**/index.html')).reduce((acc, p) => {
+	const name = p.replace('/index.html', '').split('/');
+
+	acc.push(new HtmlWebpackPlugin({
+		template: p,
+		filename: '../' + name[name.length - 1] + '.html',
+		chunks: [name[name.length - 1]],
+	}));
+
+	return acc;
+}, []);
+
 const options = {
 	mode: process.env.NODE_ENV || 'development',
-	entry: {
-		newtab: path.join(__dirname, 'src', 'extension', 'overrides', 'newtab', 'index.js'),
-		options: path.join(__dirname, 'src', 'extension', 'pages', 'options', 'index.js'),
-		popup: path.join(__dirname, 'src', 'extension', 'popup', 'index.js'),
-		background: path.join(__dirname, 'src', 'extension', 'background', 'index.js'),
-		'content-script': path.join(__dirname, 'src', 'extension', 'content', 'index.js'),
-	},
+	entry,
 	chromeExtensionBoilerplate: {
 		notHotReload: ['content-script'],
 	},
@@ -138,7 +177,7 @@ const options = {
 			.map((extension) => '.' + extension)
 			.concat(['.jsx', '.js', '.css']),
 	},
-	plugins: [
+	plugins: concat([
 		// Read the .env file
 		new Dotenv({
 			path: path.join(__dirname, '.env'),
@@ -199,11 +238,6 @@ const options = {
 			chunks: ['newtab'],
 		}),
 		new HtmlWebpackPlugin({
-			template: path.join(__dirname, 'src', 'extension', 'pages', 'options', 'index.html'),
-			filename: '../options.html',
-			chunks: ['options'],
-		}),
-		new HtmlWebpackPlugin({
 			template: path.join(__dirname, 'src', 'extension', 'popup', 'index.html'),
 			filename: '../popup.html',
 			chunks: ['popup'],
@@ -214,7 +248,7 @@ const options = {
 			chunks: ['background'],
 		}),
 		new WriteFilePlugin(),
-	],
+	], pagesHtml, overridesHtml),
 };
 
 if (env.NODE_ENV === 'development') {
