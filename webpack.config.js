@@ -32,13 +32,13 @@ const fileExtensions = [
 
 const overrides = glob.sync(path.join(__dirname, 'src/extension/overrides/**/index.js')).reduce((acc, p) => {
 	const name = p.replace('/index.js', '').split('/');
-	acc[name[name.length - 1]] = p;
+	acc['overrides/' + name[name.length - 1]] = p;
 	return acc;
 }, {});
 
 const pages = glob.sync(path.join(__dirname, 'src/extension/pages/**/index.js')).reduce((acc, p) => {
 	const name = p.replace('/index.js', '').split('/');
-	acc[name[name.length - 1]] = p;
+	acc['pages/' + name[name.length - 1]] = p;
 	return acc;
 }, {});
 
@@ -53,8 +53,8 @@ const overridesHtml = glob.sync(path.join(__dirname, 'src/extension/overrides/**
 
 	acc.push(new HtmlWebpackPlugin({
 		template: p,
-		filename: '../' + name[name.length - 1] + '.html',
-		chunks: [name[name.length - 1]],
+		filename: '../overrides/' + name[name.length - 1] + '.html',
+		chunks: ['overrides/' + name[name.length - 1]],
 	}));
 
 	return acc;
@@ -65,8 +65,8 @@ const pagesHtml = glob.sync(path.join(__dirname, 'src/extension/pages/**/index.h
 
 	acc.push(new HtmlWebpackPlugin({
 		template: p,
-		filename: '../' + name[name.length - 1] + '.html',
-		chunks: [name[name.length - 1]],
+		filename: '../pages/' + name[name.length - 1] + '.html',
+		chunks: ['pages/' + name[name.length - 1]],
 	}));
 
 	return acc;
@@ -232,11 +232,6 @@ const options = {
 				copyUnmodified: true,
 			},
 		),
-		new HtmlWebpackPlugin({
-			template: path.join(__dirname, 'src', 'extension', 'overrides', 'newtab', 'index.html'),
-			filename: '../newtab.html',
-			chunks: ['newtab'],
-		}),
 		new HtmlWebpackPlugin({
 			template: path.join(__dirname, 'src', 'extension', 'popup', 'index.html'),
 			filename: '../popup.html',
